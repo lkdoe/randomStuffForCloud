@@ -105,6 +105,32 @@ class ProjectServiceTest {
 	}
 	
 	@Test
+	public void isProjectOwnerReturnsFalseIfPersonNotInGroupThatOwnsProject() {
+		HobbyGroup projectOwners = new HobbyGroup("owners");
+		when(groupRepository.findByProjects(project)).thenReturn(projectOwners);
+		Boolean actual = projectService.isProjectOwner(project, user);
+		assertFalse(actual);
+	}
+
+	@Test
+	public void isProjectOwnerReturnsTrueIfPersonInGroupThatOwnsProject() {
+		HobbyGroup projectOwners = new HobbyGroup("owners");
+		projectOwners.addMember(user);
+		when(groupRepository.findByProjects(project)).thenReturn(projectOwners);
+		Boolean actual = projectService.isProjectOwner(project, user);
+		assertTrue(actual);
+	}
+
+	@Test
+	public void startProjectSavesGroupAndGroupContainsNewProject() {
+		HobbyGroup yetAnotherGroup = new HobbyGroup("people");
+		yetAnotherGroup.setProjects(new ArrayList<Project>());
+		projectService.startProject(project, yetAnotherGroup);
+		verify(groupRepository).save(yetAnotherGroup);
+		assertTrue(yetAnotherGroup.getProjects().contains(project));
+	}
+	
+	@Test
 	public void writeANewArticle() {
 		ArticleText article = new ArticleText("testtitle");
 		project.setArticles(new ArrayList<>());
@@ -118,4 +144,15 @@ class ProjectServiceTest {
 		ArticleText writtenArticle = projectService.writeTextArticle(1, "testtitle", "testtext");
 		assertEquals(article, writtenArticle);
 	}
+	
+	@Test
+	public void updateProject() {
+		when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+		projectService.updateProject(1, "name", "topic", "text");
+		verify(projectRepository).saveAndFlush(project);
+		assertTrue(project.getProjectName() =="name");
+		assertTrue(project.getProjectTopic() == "topic");
+		assertTrue(project.getProjectDescription() == "text");
+	}
+	
 }

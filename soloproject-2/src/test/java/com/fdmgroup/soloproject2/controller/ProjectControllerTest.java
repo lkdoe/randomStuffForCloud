@@ -140,7 +140,7 @@ class ProjectControllerTest {
 	void testDeleteProject() throws Exception { 
 		when(projectService.deleteProjectById(1, mockUser)).thenReturn("/there");
 		mvc.perform(post("/deleteproject").param("projectid", "1"))
-				.andExpect(view().name("/there"))
+				.andExpect(view().name("redirect:/there"))
 		;
 		verify(projectService).deleteProjectById(1, mockUser);
 	}

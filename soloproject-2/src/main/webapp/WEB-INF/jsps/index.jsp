@@ -20,8 +20,10 @@
 				<c:when test="${not empty recommended}">
 					<c:forEach items="${recommended}" var="project">
 						<div class="grid-item">
-							<img class="image-thumb" alt="Project Image" src="" width="150" height="150"
-							onerror="this.onerror=null; this.src='/images/cube.jpg'"/>
+							<img class="image-thumb" alt="Project Image" 
+								src="/images/projects/${project.projectName}/${project.articles[0].image}" 
+								width="auto" height="150"
+								onerror="this.onerror=null; this.src='/images/cube.jpg'"/>
 							<br/>
 							<a href="/project/${project.projectName}">${project.projectName}</a>
 							<br/>

@@ -18,7 +18,7 @@
 
 		<div class="main-image">
 			<img alt="Group image" 
-				src="/images/${group.projects[0]}/${group.projects[0].articles[0].articleImage}"
+				src="/images/projects/${group.projects[0].projectName}/${group.projects[0].articles[0].image}"
 				onerror="this.onerror=null; this.src='/images/cube.jpg'"/>
 		</div>
 		<div class="description">
@@ -39,7 +39,9 @@
 			
 			<c:forEach items="${group.projects}" var="project">
 				<div class="grid-item">
-					<img class="image-thumb" alt="Project Image" src="" width="150" height="150"
+					<img class="image-thumb" alt="Project Image" 
+						src="/images/projects/${project.projectName}/${project.articles[0].image}"
+						width="auto" height="150"
 						onerror="this.onerror=null; this.src='/images/cube.jpg'"/>
 					<br/>
 					<a href="/project/${project.projectName}">${project.projectName}</a>
